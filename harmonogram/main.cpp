@@ -48,5 +48,7 @@ int main()
     std::cout << "\nczas1:\n";
     czas1.wyswietl();
 
+    std::cout << "\n=== Koniec programu ===\n";
+
     return 0;
 }
