@@ -1,54 +1,150 @@
 #include <iostream>
 
-#include "czas.h"
+class Czas {
 
+    private:
+        int godziny;
+        int minuty;
+        int sekundy;
 
-int main()
-{
-    Czas czas1, czas2;
+        void ustawGodziny(int nowaWartosc);
+        void ustawMinuty(int nowaWartosc);
+        void ustawSekundy(int nowaWartosc);
 
-    // Poprawne wartosci
-    czas1.ustawGodziny(7);
-    czas1.ustawMinuty(46);
-    czas1.ustawSekundy(13);
+    public:
+        int pobierzGodziny();
+        int pobierzMinuty();
+        int pobierzSekundy();
 
-    czas2.ustawGodziny(17);
-    czas2.ustawMinuty(19);
-    czas2.ustawSekundy(39);
+        void ustawCzas(int sek, int min, int godz);
+        void ustawCzas(int sek, int min);
+        void ustawCzas(int sek);
+        // void ustawCzas(int sek, int min = 0, int godz = 0);
 
-    std::cout << "czas1:\n";
-    czas1.wyswietl();
+        Czas operator+(Czas& _czas);
+        bool operator<(Czas& _czas);
 
-    std::cout << "\nczas2:\n";
-    czas2.wyswietl();
+        void wyswietl();
+};
 
-    // Niepoprawne wartosci
-    bool status;
-    status = czas1.ustawGodziny(-2);
-    std::cout << "\nStatus ustawienia godziny -> -2: " << status;
+int Czas::pobierzGodziny() {
+    return godziny;
+}
 
-    status = czas1.ustawMinuty(83);
-    std::cout << "\nStatus ustawienia minut -> 83: " << status;
+int Czas::pobierzMinuty() {
+    return minuty;
+}
 
-    status = czas1.ustawSekundy(5);
-    std::cout << "\nStatus ustawienia sekund -> 5: " << status;
+int Czas::pobierzSekundy() {
+    return sekundy;
+}
 
-    std::cout << "\nczas1:\n";
-    czas1.wyswietl();
+void Czas::ustawGodziny(int nowaWartosc) {
+    godziny = nowaWartosc;
+}
 
-    status = czas1.ustawGodziny(24);
-    std::cout << "\nStatus ustawienia godziny -> 24: " << status;
+void Czas::ustawMinuty(int nowaWartosc) {
+    if (nowaWartosc < 0) {
+        minuty = 0;
+    }
+    else if (nowaWartosc > 59) {
+        godziny = godziny + nowaWartosc / 60;
+        minuty = nowaWartosc % 60;
+    }
+    else {
+        minuty = nowaWartosc;
+    }
+}
 
-    status = czas1.ustawMinuty(197246);
-    std::cout << "\nStatus ustawienia minut -> 197246: " << status;
+void Czas::ustawSekundy(int nowaWartosc) {
+    if (nowaWartosc < 0) {
+        sekundy = 0;
+    }
+    else if (nowaWartosc > 59) {
+        minuty = minuty + nowaWartosc / 60;
+        sekundy = nowaWartosc % 60;
+        ustawMinuty(minuty);
+    }
+    else {
+        sekundy = nowaWartosc;
+    }
+}
 
-    status = czas1.ustawSekundy(61);
-    std::cout << "\nStatus ustawienia sekund -> 61: " << status;
+void Czas::ustawCzas(int sekundy, int minuty, int godziny) {
+    ustawGodziny(godziny);
+    ustawMinuty(minuty);
+    ustawSekundy(sekundy);
+}
 
-    std::cout << "\nczas1:\n";
-    czas1.wyswietl();
+void Czas::ustawCzas(int sekundy, int minuty) {
+    ustawGodziny(0);
+    ustawMinuty(minuty);
+    ustawSekundy(sekundy);
+}
 
-    std::cout << "\n=== Koniec programu ===\n";
+void Czas::ustawCzas(int sekundy) {
+    ustawGodziny(0);
+    ustawMinuty(0);
+    ustawSekundy(sekundy);
+}
+// void Czas::ustawCzas(int sekundy, int minuty = 0, int godziny = 0) {
+//     ustawGodziny(godziny);
+//     ustawMinuty(minuty);
+//     ustawSekundy(sekundy);
+// }
 
+Czas Czas::operator+(Czas& _czas) {
+   Czas wynik;
+
+   int suma_sekund = sekundy + _czas.sekundy;
+   int suma_minut = minuty + _czas.minuty;
+   int suma_godzin = godziny + _czas.godziny;
+   wynik.ustawCzas(suma_sekund, suma_minut, suma_godzin);
+
+   return wynik;
+}
+
+bool Czas::operator<(Czas& _czas) {
+    if (godziny != _czas.godziny) {
+        if (godziny < _czas.godziny)
+            return true;
+        else
+            return false;
+    }
+    // Godziny rowne, czyli sprawdzamy minuty
+    if (minuty != _czas.minuty) {
+        if (minuty < _czas.minuty)
+            return true;
+        else
+            return false;
+    }
+    // Godziny i minuty rowne, czyli sprawdzamy sekundy
+    if (sekundy < _czas.sekundy)
+        return true;
+    return false;
+}
+
+void Czas::wyswietl() {
+    std::cout << "Czas: " << godziny << ":" << minuty << ":" << sekundy << "\n";
+}
+
+int main() {
+    // Czas czas1;
+    // Czas czas2;
+
+    // // czas1.ustawCzas(23, 40, 37);
+    // czas1.ustawCzas(9, 14, 1);
+    // czas2.ustawCzas(50, 26, 3);
+
+    // Czas czas3 = czas1 + czas2;
+    // czas3.wyswietl();
+
+    Czas czas1;
+    Czas czas2;
+
+    czas1.ustawCzas(9, 14, 1);
+    czas2.ustawCzas(9, 14, 1);
+
+    std::cout << "czas1 < czas2: " << (czas1 < czas2) << std::endl;
     return 0;
 }
