@@ -14,6 +14,11 @@ class Czas {
         void ustawSekundy(int nowaWartosc);
 
     public:
+        Czas(int sek, int min, int godz);
+        Czas(int sek, int min);
+        Czas(int sek);
+        Czas();
+
         int pobierzGodziny();
         int pobierzMinuty();
         int pobierzSekundy();

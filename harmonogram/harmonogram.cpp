@@ -1,16 +1,20 @@
 #include "harmonogram.h"
 
-Harmonogram::Harmonogram(){
+Harmonogram::Harmonogram() {
     liczbaCzasow = 0;
     rozmiar = 0;
     zestawienie = nullptr;
+}
+
+Harmonogram::~Harmonogram() {
+    delete[] zestawienie;
 }
 
 int Harmonogram::pobierzLiczbeCzasow() {
     return liczbaCzasow;
 }
 
-void Harmonogram::dodajCzas(Czas& _czas) {
+void Harmonogram::dodajCzas(const Czas& _czas) {
     if (liczbaCzasow == rozmiar) {
         if (zestawienie == nullptr) {
             rozmiar = 1;
@@ -32,13 +36,35 @@ void Harmonogram::dodajCzas(Czas& _czas) {
 }
 
 Czas& Harmonogram::pobierzCzas(int indeks) {
+    if (indeks < 0 || indeks >= liczbaCzasow) {
+        throw std::out_of_range("Niepoprawny indeks!");
+
+        // Jesli nie wyjatek to przykladowo mozna tak to obsluzyc
+        // std::cout << "Niepoprawny indeks!\n";
+        // static Czas nieistniejacyCzas;
+        // return nieistniejacyCzas;
+    }
     return zestawienie[indeks];
 }
 
-void Harmonogram::wypiszZestawienie() {
+Czas& Harmonogram::operator[](int indeks) {
+    return pobierzCzas(indeks);
+}
+
+Czas Harmonogram::sumaZestawienia() {
+    Czas suma;
     for (int i = 0; i < liczbaCzasow; i++) {
-        std::cout << "Czas nr " << (i + 1) << ":\n";
-        zestawienie[i].wyswietl();
-        std::cout << "\n";
+        suma += zestawienie[i];
     }
+    return suma;
+}
+
+void Harmonogram::wypiszZestawienie() {
+    std::cout << "Harmonogram (liczba czasow: " << liczbaCzasow << ")\n";
+    std::cout << "-------------------------------\n";
+    for (int i = 0; i < liczbaCzasow; i++) {
+        std::cout << i + 1 << ".";
+        zestawienie[i].wyswietl();
+    }
+    std::cout << "\n\n";
 }

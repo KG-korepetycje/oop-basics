@@ -12,11 +12,15 @@ class Harmonogram {
 
     public:
         Harmonogram();
+        ~Harmonogram();
 
         int pobierzLiczbeCzasow();
 
-        void dodajCzas(Czas& _czas);
+        void dodajCzas(const Czas& _czas);  // Moze byc const, bo nie modyfikujemy otrzymanego czasu w tej funkcji
         Czas& pobierzCzas(int indeks);
+        Czas& operator[](int indeks);
+        
+        Czas sumaZestawienia();
 
         void wypiszZestawienie();
 

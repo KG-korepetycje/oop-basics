@@ -1,59 +1,39 @@
 #include <iostream>
-// #include "czas.h"
 #include "harmonogram.h"
 
-// int main() {
-//     Czas czas1;
-//     Czas czas2;
-
-//     // // czas1.ustawCzas(23, 40, 37);
-//     czas1.ustawCzas(9, 14, 1);
-//     czas2.ustawCzas(50, 26, 3);
-
-//     std::cout << "czas1 == czas2: " << (czas1 == czas2) << std::endl;
-//     std::cout << "czas1 != czas2: " << (czas1 != czas2) << std::endl;
-//     std::cout << "czas1 < czas2: " << (czas1 < czas2) << std::endl;
-//     std::cout << "czas1 >= czas2: " << (czas1 >= czas2) << std::endl;
-
-//     Czas czas3 = czas1 + czas2;
-//     std::cout << "Czas3\n";
-//     czas3.wyswietl();
-
-//     czas1 += czas2;
-//     std::cout << "Czas1\n";
-//     czas1.wyswietl();
-    
-
-//     // Czas czas1;
-//     // Czas czas2;
-
-//     czas1.ustawCzas(9, 14, 1);
-//     czas2.ustawCzas(9, 14, 1);
-
-//     std::cout << "czas1 == czas2: " << (czas1 == czas2) << std::endl;
-
-//     // std::cout << "czas1 < czas2: " << (czas1 < czas2) << std::endl;
-//     return 0;
-// }
 
 int main() {
-    Harmonogram h;
+    Harmonogram harmonogram;
 
-    Czas czas1;
+    Czas czas1, czas2;
     czas1.ustawCzas(9, 14, 1);
-
-    h.dodajCzas(czas1);
-    h.wypiszZestawienie();
-
-    Czas czas2;
     czas2.ustawCzas(15, 10, 5);
 
-    h.dodajCzas(czas2);
-    h.wypiszZestawienie();
+    harmonogram.dodajCzas(czas1);
+    harmonogram.dodajCzas(czas2);
+    harmonogram.wypiszZestawienie();
 
-    Czas czas3 = h.pobierzCzas(0);
-    czas3.ustawCzas(8, 8, 8);
+    Czas& czas = harmonogram.pobierzCzas(0);
+    czas.ustawCzas(8, 8, 8);
+    harmonogram[1].ustawCzas(8, 4, 2);
+    // harmonogram.pobierzCzas(5).ustawCzas(9, 9, 9);  // Indeks poza zakresem
 
-    h.wypiszZestawienie();
+    harmonogram.wypiszZestawienie();
+
+    Czas czas3(0, 0, 3);
+    Czas czas4(0, 30, 1);
+    Czas czas5(60, 14, 0);
+    harmonogram.dodajCzas(czas3);
+    harmonogram.dodajCzas(czas4);
+    harmonogram.dodajCzas(czas5);
+
+    harmonogram.wypiszZestawienie();
+    Czas czas6 = harmonogram[3];
+    harmonogram.dodajCzas(czas6);
+    harmonogram.wypiszZestawienie();
+    Czas sumaZestawienia = harmonogram.sumaZestawienia();
+    std::cout << "Suma zestawienia: ";
+    sumaZestawienia.wyswietl();
+    std::cout << "\n";
     return 0;
 }

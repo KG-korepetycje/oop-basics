@@ -1,5 +1,21 @@
 #include "czas.h"
 
+Czas::Czas(int sek, int min, int godz) {
+    ustawCzas(sek, min, godz);
+}
+
+Czas::Czas(int sek, int min) {
+    ustawCzas(sek, min);
+}
+
+Czas::Czas(int sek) {
+    ustawCzas(sek);
+}
+
+Czas::Czas() {
+    ustawCzas(0, 0, 0);
+}
+
 int Czas::pobierzGodziny() {
     return godziny;
 }
