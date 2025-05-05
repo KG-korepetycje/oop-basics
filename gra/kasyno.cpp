@@ -54,6 +54,15 @@ int Kasyno::pobierzLiczbeGraczy() {
     return liczbaGraczy;
 }
 
+bool Kasyno::czyKoniecGry() {
+    for (int i = 0; i < liczbaGraczy; i++) {
+        if (!gracze[i].czySpasowal()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Kasyno::graj() {
     tasuj();
 
@@ -61,12 +70,28 @@ void Kasyno::graj() {
     gracze = new Gracz[liczbaGraczy];
 
     for (int i = 0; i < liczbaGraczy; i++) {
-        gracze[i] = Gracz();
+        gracze[i].ustawKasyno(this);
+        gracze[i].wezKarte(dajKarte());
+        gracze[i].wezKarte(dajKarte());
     }
 
+    while(!czyKoniecGry()) { // sprawdzamy, czy wszyscy spasowali
+        for (int i = 0; i < liczbaGraczy; i++) {
+            if (!gracze[i].czySpasowal()) {
+                std::cout << "\nKarty gracza " << i + 1 << "\n";
+                gracze[i].wyswietlKarty();
+                gracze[i].czyPasuje();
+            } else {
+                std::cout << "\nGracz " << i + 1 << " SPASOWAL!\n";
+            }
+        }
+    }
+
+    zakonczGre();
+}
+
+void Kasyno::zakonczGre() {
     for (int i = 0; i < liczbaGraczy; i++) {
-        gracze[i].wezKarte(dajKarte());
-        gracze[i].wezKarte(dajKarte());
         std::cout << "\nKarty gracza " << i + 1 << "\n";
         gracze[i].wyswietlKarty();
     }

@@ -14,6 +14,7 @@ class Kasyno {
         int liczbaGraczy;
 
         int pobierzLiczbeGraczy();
+        bool czyKoniecGry();
 
     public:
         Kasyno();
@@ -23,4 +24,5 @@ class Kasyno {
 
         void tasuj();
         void graj();
+        void zakonczGre();
 };

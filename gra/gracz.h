@@ -3,6 +3,7 @@
 
 #include "karta.h"
 
+class Kasyno;
 
 class Gracz {
     private:
@@ -10,11 +11,15 @@ class Gracz {
         int liczbaKart = 0;
         int wartoscKart = 0;
 
+        Kasyno* kasyno;
         bool spasowal = false;
 
     public:
+        void ustawKasyno(Kasyno* _kasyno);
+
         void wezKarte(Karta* _karta);
         void wyswietlKarty();
 
+        bool czyPasuje();
         bool czySpasowal();
 };
