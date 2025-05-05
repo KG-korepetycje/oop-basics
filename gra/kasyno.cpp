@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "kasyno.h"
 
 Kasyno::Kasyno() {
@@ -9,10 +11,10 @@ Kasyno::Kasyno() {
             licznik++;
         }
     }
+}
 
-    for (int i = 0; i < 3; i++) {
-        gracze[i] = Gracz();
-    }
+Kasyno::~Kasyno() {
+    delete[] gracze;
 }
 
 Karta* Kasyno::dajKarte() {
@@ -41,10 +43,28 @@ void Kasyno::tasuj() {
     }
 }
 
+int Kasyno::pobierzLiczbeGraczy() {
+    int liczbaGraczy = -1;
+
+    while (liczbaGraczy < 0 || liczbaGraczy > 3) {
+        std::cout << "Podaj liczbe graczy [1-3]: ";
+        std::cin >> liczbaGraczy;
+    }
+
+    return liczbaGraczy;
+}
+
 void Kasyno::graj() {
     tasuj();
 
-    for (int i = 0; i < 3; i++) {
+    liczbaGraczy = pobierzLiczbeGraczy();
+    gracze = new Gracz[liczbaGraczy];
+
+    for (int i = 0; i < liczbaGraczy; i++) {
+        gracze[i] = Gracz();
+    }
+
+    for (int i = 0; i < liczbaGraczy; i++) {
         gracze[i].wezKarte(dajKarte());
         gracze[i].wezKarte(dajKarte());
         std::cout << "\nKarty gracza " << i + 1 << "\n";

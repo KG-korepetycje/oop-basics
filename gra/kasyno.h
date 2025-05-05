@@ -10,10 +10,14 @@ class Kasyno {
         Karta talia[52];
         bool wydaneKarty[52];
 
-        Gracz gracze[3];
+        Gracz* gracze;
+        int liczbaGraczy;
+
+        int pobierzLiczbeGraczy();
 
     public:
         Kasyno();
+        ~Kasyno();
 
         Karta* dajKarte();
 

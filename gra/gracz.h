@@ -10,8 +10,11 @@ class Gracz {
         int liczbaKart = 0;
         int wartoscKart = 0;
 
+        bool spasowal = false;
+
     public:
-        
         void wezKarte(Karta* _karta);
         void wyswietlKarty();
+
+        bool czySpasowal();
 };

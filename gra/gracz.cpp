@@ -16,3 +16,7 @@ void Gracz::wyswietlKarty() {
     }
     std::cout << "Suma wartosci kart: " << wartoscKart << "\n";
 }
+
+bool Gracz::czySpasowal() {
+    return spasowal;
+}
