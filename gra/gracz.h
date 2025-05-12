@@ -6,7 +6,7 @@
 class Kasyno;
 
 class Gracz {
-    private:
+    protected:
         Karta* karty[10];
         int liczbaKart = 0;
         int wartoscKart = 0;
@@ -22,4 +22,6 @@ class Gracz {
 
         bool czyPasuje();
         bool czySpasowal();
+
+        int wezWartoscKart();
 };

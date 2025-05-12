@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 
+#include "bot.h"
 #include "gracz.h"
 #include "karta.h"
 
@@ -13,8 +14,13 @@ class Kasyno {
         Gracz* gracze;
         int liczbaGraczy;
 
+        Bot* boty;
+        int liczbaBotow;
+
         int pobierzLiczbeGraczy();
+        int pobierzLiczbeBotow();
         bool czyKoniecGry();
+        bool czyKolejnaGra();
 
     public:
         Kasyno();

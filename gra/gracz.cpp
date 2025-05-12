@@ -52,3 +52,7 @@ bool Gracz::czyPasuje() {
 bool Gracz::czySpasowal() {
     return spasowal;
 }
+
+int Gracz::wezWartoscKart() {
+    return wartoscKart;
+}
