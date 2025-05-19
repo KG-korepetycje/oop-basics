@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 
 #include "gracz.h"
 #include "kasyno.h"
@@ -27,13 +28,23 @@ void Gracz::wyswietlKarty() {
 bool Gracz::czyPasuje() {
     int decyzja = -1;
 
-    while (decyzja < 1 || decyzja > 2) {
+    while (true) {
         std::cout << "\nPasujesz czy grasz dalej?\n";
         std::cout << "[1] pasuje\n";
         std::cout << "[2] gram dalej\n";
-
         std::cout << "Wybor: ";
         std::cin >> decyzja;
+
+        if (std::cin.fail() == true) {
+            std::cout << "\nBledna wartosc! Prosze podac wartosc liczbowa 1 lub 2.\n";  // opcjonalne
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            if (decyzja == 1 || decyzja == 2)
+                break;
+            else
+                std::cout << "\nDecyzja musi byc rowna 1 lub 2.\n";
+        }
     }
 
     if (decyzja == 1) {

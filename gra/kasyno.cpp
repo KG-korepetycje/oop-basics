@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 
 #include "kasyno.h"
 
@@ -47,23 +48,41 @@ void Kasyno::tasuj() {
 int Kasyno::pobierzLiczbeGraczy() {
     int liczbaGraczy = -1;
 
-    while (liczbaGraczy < 0 || liczbaGraczy > 3) {
-        std::cout << "Podaj liczbe graczy [1-3]: ";
+    while (true) {
+        std::cout << "\nPodaj liczbe graczy [1-3]: ";
         std::cin >> liczbaGraczy;
-    }
 
-    return liczbaGraczy;
+        if (std::cin.fail() == true) {
+            std::cout << "\nBledna wartosc! Prosze podac wartosc liczbowa z zakresu 1-3.\n";  // opcjonalne
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            if (liczbaGraczy >= 1 && liczbaGraczy <= 3)
+                return liczbaGraczy;
+            else
+                std::cout << "\nLiczba graczy musi być z zakresu 1-3.\n";
+        }
+    }
 }
 
 int Kasyno::pobierzLiczbeBotow() {
     int liczbaBotow = -1;
 
-    while (liczbaBotow < 0 || liczbaBotow > 3) {
-        std::cout << "Podaj liczbe botow [1-3]: ";
+    while (true) {
+        std::cout << "\nPodaj liczbe botow [1-3]: ";
         std::cin >> liczbaBotow;
-    }
 
-    return liczbaBotow;
+        if (std::cin.fail() == true) {
+            std::cout << "\nBledna wartosc! Prosze podac wartosc liczbowa z zakresu 1-3.\n";  // opcjonalne
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            if (liczbaBotow >= 1 && liczbaBotow <= 3)
+                return liczbaBotow;
+            else
+                std::cout << "\nLiczba botow musi byc z zakresu 1-3.\n";
+        }
+    }
 }
 
 bool Kasyno::czyKoniecGry() {
@@ -83,18 +102,24 @@ bool Kasyno::czyKoniecGry() {
 bool Kasyno::czyKolejnaGra() {
     int decyzja = -1;
 
-    while (decyzja < 1 || decyzja > 2) {
+    while (true) {
         std::cout << "\nCzy rozpoczac nowa gre?\n";
         std::cout << "[1] tak\n";
         std::cout << "[2] nie\n";
-
         std::cout << "Wybor: ";
         std::cin >> decyzja;
-    }
 
-    if (decyzja == 1)
-        return true;
-    return false;
+        if (std::cin.fail() == true) {
+            std::cout << "\nBledna wartosc! Prosze podac wartosc liczbowa 1 lub 2.\n";  // opcjonalne
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            if (decyzja == 1 || decyzja == 2)
+                return decyzja == 1;
+            else
+                std::cout << "\nDecyzja musi byc rowna 1 lub 2.\n";
+        }
+    }
 }
 
 void Kasyno::graj() {
