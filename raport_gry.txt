@@ -1,0 +1,4 @@
+NAZWA GRACZA LICZBA PUNKTOWSTATUS
+Bob 23 Przegrany
+Alice 22 Przegrany
+Tom 24 Przegrany

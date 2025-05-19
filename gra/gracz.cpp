@@ -8,6 +8,22 @@ void Gracz::ustawKasyno(Kasyno* _kasyno) {
     kasyno = _kasyno;
 }
 
+void Gracz::ustawNazwe(const std::string& _nazwa) {
+    nazwa = _nazwa;
+}
+
+std::string& Gracz::pobierzNazwe() {
+    return nazwa;
+}
+
+void Gracz::ustawStatus(const std::string& _status) {
+    status = _status;
+}
+
+std::string& Gracz::pobierzStatus() {
+    return status;
+}
+
 void Gracz::wezKarte(Karta* _karta) {
     if (liczbaKart >= 0 && liczbaKart < 10){
         karty[liczbaKart] = _karta;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <limits>
 
 #include "kasyno.h"
@@ -85,6 +86,26 @@ int Kasyno::pobierzLiczbeBotow() {
     }
 }
 
+std::string Kasyno::pobierzNazweGracza(int _numerGracza) {
+    std::string nazwa;
+
+    while (true) {
+        std::cout << "\nPodaj nazwe gracza nr " << _numerGracza << " (3-20 znakow): ";
+        std::cin >> nazwa;
+
+        if (std::cin.fail() == true) {
+            std::cout << "\nBledna wartosc! Prosze podac poprawna nazwe gracza.\n";  // opcjonalne
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } else {
+            if (nazwa.length() >= 3 && nazwa.length() <= 20)
+                return nazwa;
+            else
+                std::cout << "\nNazwa musi byc napisem o dlugosci od 3 do 20 znakow.\n";
+        }
+    }
+}
+
 bool Kasyno::czyKoniecGry() {
     for (int i = 0; i < liczbaGraczy; i++) {
         if (!gracze[i].czySpasowal()) {
@@ -132,6 +153,8 @@ void Kasyno::graj() {
     boty = new Bot[liczbaBotow];
 
     for (int i = 0; i < liczbaGraczy; i++) {
+        std::string nazwa = pobierzNazweGracza(i + 1);
+        gracze[i].ustawNazwe(nazwa);
         gracze[i].ustawKasyno(this);
         gracze[i].wezKarte(dajKarte());
         gracze[i].wezKarte(dajKarte());
@@ -139,6 +162,9 @@ void Kasyno::graj() {
 
     Strategia strategie[] = {ZACHOWAWCZA, NORMALNA, RYZYKUJACA};
     for (int i = 0; i < liczbaBotow; i++) {
+        // std::string nazwa = "Bot" + ('A' + i);
+        std::string nazwa = "BotA";
+        boty[i].ustawNazwe(nazwa);
         boty[i].ustawKasyno(this);
         boty[i].ustawStrategie(strategie[rand() % 3]);  // Losowy indeks 0-2
         boty[i].wezKarte(dajKarte());
@@ -148,18 +174,18 @@ void Kasyno::graj() {
     while(!czyKoniecGry()) { // sprawdzamy, czy wszyscy spasowali
         for (int i = 0; i < liczbaGraczy; i++) {
             if (!gracze[i].czySpasowal()) {
-                std::cout << "\nKarty gracza " << i + 1 << "\n";
+                std::cout << "\nKarty gracza [" << gracze[i].pobierzNazwe() << "]\n";
                 gracze[i].wyswietlKarty();
                 gracze[i].czyPasuje();
             } else {
-                std::cout << "\nGracz " << i + 1 << " SPASOWAL!\n";
+                std::cout << "\nGracz [" << gracze[i].pobierzNazwe() << "] SPASOWAL!\n";
             }
         }
         for (int i = 0; i < liczbaBotow; i++) {
             if (!boty[i].czySpasowal())
                 boty[i].czyPasuje();
             else
-                std::cout << "\nBot " << i + 1 << " SPASOWAL!\n";
+                std::cout << "\nBot [" << boty[i].pobierzNazwe() << "] SPASOWAL!\n";
         }
     }
 
@@ -171,13 +197,23 @@ void Kasyno::graj() {
     }
 }
 
+void Kasyno::eksportRaportu() {
+    std::ofstream raport;
+    raport.open("./raport_gry.txt", std::ofstream::out);
+    raport << "NAZWA GRACZA" << " LICZBA PUNKTOW" << "STATUS";
+    for (int i = 0; i < liczbaGraczy; i++) {
+        raport << gracze[i].pobierzNazwe() << " " << gracze[i].wezWartoscKart() << " " << gracze[i].pobierzStatus() << "\n";
+    }
+    raport.close();
+}
+
 void Kasyno::zakonczGre() {
     for (int i = 0; i < liczbaGraczy; i++) {
-        std::cout << "\nKarty gracza " << i + 1 << "\n";
+        std::cout << "\nKarty gracza [" << gracze[i].pobierzNazwe() << "]\n";
         gracze[i].wyswietlKarty();
     }
     for (int i = 0; i < liczbaBotow; i++) {
-        std::cout << "\nKarty bota " << i + 1 << "\n";
+        std::cout << "\nKarty bota [" << boty[i].pobierzNazwe() << "]\n";
         boty[i].wyswietlKarty();
     }
 
@@ -185,13 +221,15 @@ void Kasyno::zakonczGre() {
     bool czyJestZwyciezca = false;
     for (int i = 0; i < liczbaGraczy; i++) {
         if (gracze[i].wezWartoscKart() == 21) {
-            std::cout << "\nGracz " << i + 1 << " WYGRAL!\n";
+            std::cout << "\nGracz [" << gracze[i].pobierzNazwe() << "] WYGRAL!\n";
+            gracze[i].ustawStatus("Wygrany");
             czyJestZwyciezca = true;
         }
     }
     for (int i = 0; i < liczbaBotow; i++) {
         if (boty[i].wezWartoscKart() == 21) {
-            std::cout << "\nBot " << i + 1 << " WYGRAL!\n";
+            std::cout << "\nBot [" << boty[i].pobierzNazwe() << "] WYGRAL!\n";
+            boty[i].ustawStatus("Wygrany");
             czyJestZwyciezca = true;
         }
     }
@@ -200,29 +238,31 @@ void Kasyno::zakonczGre() {
 
     // Warunek nr 2
     int maksDozwolonyWynik = -1;
-    int indeks = 0;
+    std::string nazwa;
     bool czyGracz;
     for (int i = 0; i < liczbaGraczy; i++) {
         if (gracze[i].wezWartoscKart() < 21 && gracze[i].wezWartoscKart() > maksDozwolonyWynik) {
             maksDozwolonyWynik = gracze[i].wezWartoscKart();
-            indeks = i + 1;
+            nazwa = gracze[i].pobierzNazwe();
             czyGracz = true;
         }
     }
     for (int i = 0; i < liczbaBotow; i++) {
         if (boty[i].wezWartoscKart() < 21 && boty[i].wezWartoscKart() > maksDozwolonyWynik) {
             maksDozwolonyWynik = boty[i].wezWartoscKart();
-            indeks = i + 1;
+            nazwa = boty[i].pobierzNazwe();
             czyGracz = false;
         }
     }
     if (maksDozwolonyWynik != -1) {
         if (czyGracz)
-            std::cout << "\nGracz " << indeks << " WYGRAL!\n";
+            std::cout << "\nGracz [" << nazwa << "] WYGRAL!\n";
         else
-            std::cout << "\nBot " << indeks << " WYGRAL!\n";
+            std::cout << "\nBot [" << nazwa << "] WYGRAL!\n";
     } else {
         // Warunek nr 3
        std::cout << "\nWSZYSCY PRZEGRALI!\n";
     }
+
+    eksportRaportu();
 }

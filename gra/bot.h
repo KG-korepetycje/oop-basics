@@ -4,9 +4,9 @@
 #include "gracz.h"
 
 enum Strategia {
-  RYZYKUJACA = 19,
-  NORMALNA = 17,
-  ZACHOWAWCZA = 15
+    RYZYKUJACA = 19,
+    NORMALNA = 17,
+    ZACHOWAWCZA = 15
 };
 
 

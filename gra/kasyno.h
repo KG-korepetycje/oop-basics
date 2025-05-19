@@ -19,6 +19,7 @@ class Kasyno {
 
         int pobierzLiczbeGraczy();
         int pobierzLiczbeBotow();
+        std::string pobierzNazweGracza(int _numerGracza);
         bool czyKoniecGry();
         bool czyKolejnaGra();
 
@@ -31,4 +32,5 @@ class Kasyno {
         void tasuj();
         void graj();
         void zakonczGre();
+        void eksportRaportu();
 };

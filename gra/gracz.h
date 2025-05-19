@@ -14,8 +14,15 @@ class Gracz {
         Kasyno* kasyno;
         bool spasowal = false;
 
+        std::string nazwa;
+        std::string status = "Przegrany";
+
     public:
         void ustawKasyno(Kasyno* _kasyno);
+        void ustawNazwe(const std::string& _nazwa);
+        std::string& pobierzNazwe();
+        void ustawStatus(const std::string& _status);
+        std::string& pobierzStatus();
 
         void wezKarte(Karta* _karta);
         void wyswietlKarty();
