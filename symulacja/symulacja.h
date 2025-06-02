@@ -6,12 +6,14 @@
 
 #include "pomieszczenie.h"
 #include "grzejnik.h"
+#include "regulator.h"
 
 
 class Symulacja {
     private:
         Pomieszczenie pokoj;
         Grzejnik grzejnik;
+        Regulator* regulator;
 
         std::vector<float> czasy;
         std::vector<float> temperatury;
@@ -24,9 +26,12 @@ class Symulacja {
             float wysokoscPokoju,
             float szerokoscPokoju,
             float glebokoscPokoju,
-            float mocMaksymalnaGrzejnika
+            float mocMaksymalnaGrzejnika,
+            float zadanaTemperatura,
+            bool czyRegulatorDwustawny
             // float tempZewnetrzna = -20.00
         );
+        ~Symulacja();
 
         void przebieg(int ileIteracji, float dT);
         void zapiszWyniki(const std::string &sciezkaPliku);

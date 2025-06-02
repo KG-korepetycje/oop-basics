@@ -1,21 +1,32 @@
 #include "symulacja.h"
+#include "dwustawny.h"
+#include "pid.h"
 
 
 Symulacja::Symulacja(
     float wysokoscPokoju,
     float szerokoscPokoju,
     float glebokoscPokoju,
-    float mocMaksymalnaGrzejnika
+    float mocMaksymalnaGrzejnika,
+    float zadanaTemperatura,
+    bool czyRegulatorDwustawny
     // float tempZewnetrzna = -20.00
 )
     : pokoj(wysokoscPokoju,szerokoscPokoju,glebokoscPokoju)
     , grzejnik(mocMaksymalnaGrzejnika)
 {
-
+    if (czyRegulatorDwustawny)
+        regulator = new Dwustawny(pokoj, grzejnik, zadanaTemperatura);
+    else
+        regulator = new PID(pokoj, grzejnik, zadanaTemperatura);
 }
 
+Symulacja::~Symulacja() {
+    delete regulator;
+}
 
 void Symulacja::iteracja(float dT) {
+    regulator->aktualizuj(dT);
     pokoj.dodajCieplo(grzejnik.emitujCieplo(dT));
     pokoj.aktualizuj(dT);
     std::cout << "Aktualna temperatura pokoju: " << pokoj.getTemperatura() << "\n";

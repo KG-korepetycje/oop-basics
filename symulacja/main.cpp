@@ -8,12 +8,21 @@ int main() {
     float szerokoscPokoju = 5;
     float glebokoscPokoju = 4;
     float mocMaksymalnaGrzejnika = 1000;
-    int liczbaIteracji = 50;
+    float zadanaTemperatura = 22;
+    bool czyRegulatorDwustawny = false;
+    int liczbaIteracji = 800;
     float dT = 5.0;
 
-    Symulacja symulacja(wysokoscPokoju, szerokoscPokoju, glebokoscPokoju, mocMaksymalnaGrzejnika);
+    Symulacja symulacja(
+        wysokoscPokoju,
+        szerokoscPokoju,
+        glebokoscPokoju,
+        mocMaksymalnaGrzejnika,
+        zadanaTemperatura,
+        czyRegulatorDwustawny
+    );
     symulacja.przebieg(liczbaIteracji, dT);
-    symulacja.zapiszWyniki("./symulacja-wyniki/wyniki.csv");
+    symulacja.zapiszWyniki("./symulacja-wyniki/wyniki_pid.csv");
 
     return 0;
 }
