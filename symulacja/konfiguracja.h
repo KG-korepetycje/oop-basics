@@ -1,30 +1,24 @@
 #pragma once
-#include <iostream>
-#include <fstream>
+#include <string>
 
+enum class TypRegulatora {
+    DWUSTAWNY,
+    PID,
+    BRAK
+};
 
 class Konfiguracja {
-    private:
-        float wysokoscPokoju;
-        float szerokoscPokoju;
-        float glebokoscPokoju;
-        float mocMaksymalnaGrzejnika;
-        float czasProbkowania;
-        int liczbaIteracji;
-        float zadanaTemperatura;
-        int regulator;
-
-        void ustawWartosciDomyslne();
-
     public:
-        Konfiguracja(const std::string &sciezkaPlikuUstawien);
-        
-        float getWysokoscPokoju() const { return wysokoscPokoju; }
-        float getSzerokoscPokoju() const { return szerokoscPokoju; }
-        float getGlebokoscPokoju() const { return glebokoscPokoju; }
-        float getMocMaksymalnaGrzejnika() const { return mocMaksymalnaGrzejnika; }
-        float getCzasProbkowania() const { return czasProbkowania; }
-        int getLiczbaIteracji() const { return liczbaIteracji; }
-        float getZadanaTemperatura() const { return zadanaTemperatura; }
-        int getRegulator() const { return regulator; }
+        // Parametry z wartościami domyślnymi (zgodnie z poleceniem)
+        float wysokoscPokoju = 3.0;
+        float szerokoscPokoju = 4.0;
+        float glebokoscPokoju = 5.0;
+        float mocMaksymalnaGrzejnika = 1000.0;
+        float czasProbkowania = 5.0;
+        int liczbaIteracji = 1000;
+        float zadanaTemperatura = 20.0;
+        TypRegulatora typRegulatora = TypRegulatora::PID;
+
+        Konfiguracja() = default; 
+        Konfiguracja(const std::string& sciezkaPlikuUstawien);
 };

@@ -1,21 +1,16 @@
-#include <exception>
+#pragma once
+#include <stdexcept>
 #include <string>
 
-class BladOdczytuPliku : public std::exception {
-    std::string komunikat;
-public:
-    BladOdczytuPliku(const std::string& msg) : komunikat(msg) {}
-    const char* what() const noexcept override {
-        return komunikat.c_str();
-    }
+
+class BladOdczytuPliku : public std::runtime_error {
+    public:
+        BladOdczytuPliku(const std::string& msg) 
+            : std::runtime_error("Blad odczytu pliku: " + msg) {}
 };
 
-
-class NiepoprawnyRegulator : public std::exception {
-    std::string komunikat;
-public:
-    NiepoprawnyRegulator(const std::string& msg) : komunikat(msg) {}
-    const char* what() const noexcept override {
-        return komunikat.c_str();
-    }
+class BladWartosciKonfiguracji : public std::runtime_error {
+    public:
+        BladWartosciKonfiguracji(const std::string& msg) 
+            : std::runtime_error("Blad wartosci w konfiguracji: " + msg) {}
 };

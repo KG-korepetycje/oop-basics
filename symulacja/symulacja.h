@@ -23,7 +23,7 @@ class Symulacja {
         void iteracja(float dT);
 
     public:
-        Symulacja(const Konfiguracja &konfiguracja);
+        Symulacja(const Konfiguracja& konfiguracja);
         Symulacja(
             float wysokoscPokoju,
             float szerokoscPokoju,

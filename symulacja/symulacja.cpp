@@ -3,20 +3,21 @@
 #include "pid.h"
 
 
-Symulacja::Symulacja(const Konfiguracja &konfiguracja)
-    : pokoj(
-        konfiguracja.getWysokoscPokoju(),
-        konfiguracja.getSzerokoscPokoju(),
-        konfiguracja.getGlebokoscPokoju()
-    )
-    , grzejnik(konfiguracja.getMocMaksymalnaGrzejnika())
+Symulacja::Symulacja(const Konfiguracja& konfiguracja)
+    : pokoj(konfiguracja.wysokoscPokoju, konfiguracja.szerokoscPokoju, konfiguracja.glebokoscPokoju)
+    , grzejnik(konfiguracja.mocMaksymalnaGrzejnika)
 {
-    if (konfiguracja.getRegulator() == 1)
-        regulator = new Dwustawny(pokoj, grzejnik, konfiguracja.getZadanaTemperatura());
-    else if (konfiguracja.getRegulator() == 2)
-        regulator = new PID(pokoj, grzejnik, konfiguracja.getZadanaTemperatura());
-    else
-        regulator = nullptr;
+    switch (konfiguracja.typRegulatora) {
+        case TypRegulatora::DWUSTAWNY:
+            regulator = new Dwustawny(pokoj, grzejnik, konfiguracja.zadanaTemperatura);
+            break;
+        case TypRegulatora::PID:
+            regulator = new PID(pokoj, grzejnik, konfiguracja.zadanaTemperatura);
+            break;
+        case TypRegulatora::BRAK:
+            regulator = nullptr;
+            break;
+    }
 }
 
 Symulacja::Symulacja(
