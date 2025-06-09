@@ -3,6 +3,22 @@
 #include "pid.h"
 
 
+Symulacja::Symulacja(const Konfiguracja &konfiguracja)
+    : pokoj(
+        konfiguracja.getWysokoscPokoju(),
+        konfiguracja.getSzerokoscPokoju(),
+        konfiguracja.getGlebokoscPokoju()
+    )
+    , grzejnik(konfiguracja.getMocMaksymalnaGrzejnika())
+{
+    if (konfiguracja.getRegulator() == 1)
+        regulator = new Dwustawny(pokoj, grzejnik, konfiguracja.getZadanaTemperatura());
+    else if (konfiguracja.getRegulator() == 2)
+        regulator = new PID(pokoj, grzejnik, konfiguracja.getZadanaTemperatura());
+    else
+        regulator = nullptr;
+}
+
 Symulacja::Symulacja(
     float wysokoscPokoju,
     float szerokoscPokoju,
@@ -26,7 +42,8 @@ Symulacja::~Symulacja() {
 }
 
 void Symulacja::iteracja(float dT) {
-    regulator->aktualizuj(dT);
+    if (regulator != nullptr)
+        regulator->aktualizuj(dT);
     pokoj.dodajCieplo(grzejnik.emitujCieplo(dT));
     pokoj.aktualizuj(dT);
     std::cout << "Aktualna temperatura pokoju: " << pokoj.getTemperatura() << "\n";

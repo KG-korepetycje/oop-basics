@@ -7,6 +7,7 @@
 #include "pomieszczenie.h"
 #include "grzejnik.h"
 #include "regulator.h"
+#include "konfiguracja.h"
 
 
 class Symulacja {
@@ -22,6 +23,7 @@ class Symulacja {
         void iteracja(float dT);
 
     public:
+        Symulacja(const Konfiguracja &konfiguracja);
         Symulacja(
             float wysokoscPokoju,
             float szerokoscPokoju,

@@ -1,0 +1,8 @@
+wysokoscPokoju=3
+szerokoscPokoju=5
+glebokoscPokoju=4
+mocMaksymalnaGrzejnika=1000
+czasProbkowania=5
+liczbaIteracji=800
+zadanaTemperatura=22
+regulator=1
